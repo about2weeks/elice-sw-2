@@ -20,3 +20,20 @@ p{
     align-items: center;
     justify-content: center;
 }
+
+.animation{
+    animation-name: changeColor;
+    width:100px;
+    height: 100px;
+    background-color: blue;
+    animation-duration: 4s;
+}
+
+@keyframes changeColor {
+    from{
+
+    }
+    to{
+        
+    }
+}
