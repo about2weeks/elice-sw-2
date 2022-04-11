@@ -61,7 +61,18 @@
 <body>
         <input type = "button" id = "button" value = "night"
         onclick="
-        dark();
+        if(this.value==='night'){
+                document.querySelector('body').style.backgroundColor='black';
+        document.querySelector('body').style.color='white';
+    document.querySelector('#container').style.backgroundColor='blue';
+            this.value = 'day';
+        }else{
+            document.querySelector('body').style.backgroundColor='white';
+       document.querySelector('body').style.color='black';
+       document.querySelector('#container').style.backgroundColor='transparent';
+       this.value = 'night';
+        }
+        ;
         "  
         >
 <h1><a href ="index.html">World Wide Web</a></h1>
