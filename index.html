@@ -36,21 +36,32 @@
     
 </style>
 <script>
-   function bodyDark() {
+    var button = "";
+    window.onload = function (){
+        button = document.getElementById("button");
+    }
+   function dark() {
        document.querySelector('body').style.backgroundColor='black';
+       document.querySelector('body').style.color='white';
+       document.querySelector('#container').style.backgroundColor='blue';
+       button.setAttribute('value','day');
+       button.setAttribute("onClick","day();");
     }
 
-    function conDark(){
-        document.querySelector('#container').style.backgroundColor='blue';
+    function day(){
+        document.querySelector('body').style.backgroundColor='white';
+       document.querySelector('body').style.color='black';
+       document.querySelector('#container').style.backgroundColor='transparent';
+       button.setAttribute('value','dark');
+       button.setAttribute("onClick","dark();");
     }
     </script>
 </head>
 
 <body>
-        <input type = "button" value = "night"
+        <input type = "button" id = "button" value = "night"
         onclick="
-        bodyDark();
-        conDark();
+        dark();
         "  
         >
 <h1><a href ="index.html">World Wide Web</a></h1>
