@@ -44,16 +44,20 @@
        document.querySelector('body').style.backgroundColor='black';
        document.querySelector('body').style.color='white';
        document.querySelector('#container').style.backgroundColor='blue';
-       button.setAttribute('value','day');
-       button.setAttribute("onClick","day();");
+       let as = document.querySelector('#container').querySelectorAll('a');
+       for(let i = 0; i<as.length; i++){
+           as[i].style.color = 'red';
+       }
     }
 
     function day(){
         document.querySelector('body').style.backgroundColor='white';
        document.querySelector('body').style.color='black';
        document.querySelector('#container').style.backgroundColor='transparent';
-       button.setAttribute('value','dark');
-       button.setAttribute("onClick","dark();");
+       let as = document.querySelector('#container').querySelectorAll('a');
+       for(let i = 0; i<as.length; i++){
+           as[i].style.color = 'blue';
+       }
     }
     </script>
 </head>
@@ -62,14 +66,10 @@
         <input type = "button" id = "button" value = "night"
         onclick="
         if(this.value==='night'){
-                document.querySelector('body').style.backgroundColor='black';
-        document.querySelector('body').style.color='white';
-    document.querySelector('#container').style.backgroundColor='blue';
+                dark();
             this.value = 'day';
         }else{
-            document.querySelector('body').style.backgroundColor='white';
-       document.querySelector('body').style.color='black';
-       document.querySelector('#container').style.backgroundColor='transparent';
+            day();
        this.value = 'night';
         }
         ;
