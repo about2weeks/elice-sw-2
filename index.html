@@ -59,6 +59,14 @@
            as[i].style.color = 'blue';
        }
     }
+
+    function change(mode){
+        if(mode === 'night'){
+            dark();
+        }else{
+            day();
+        }
+    }
     </script>
 </head>
 
@@ -66,10 +74,10 @@
         <input type = "button" id = "button" value = "night"
         onclick="
         if(this.value==='night'){
-                dark();
+                change('night');
             this.value = 'day';
         }else{
-            day();
+            change('day');
        this.value = 'night';
         }
         ;
