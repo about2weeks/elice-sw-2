@@ -273,7 +273,7 @@ section#photo {
     line-height: 100px;
 
     transition-property: background-color;
-    transition-delay: 1s;
+    transition-delay: 0.05s;
 }
 
 
