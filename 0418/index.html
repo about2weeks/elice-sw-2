@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F384BCXPM7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-F384BCXPM7');
+</script>
+<title>Web - Welcome</title>
+<meta charset = "utf-8">
+<link rel = "stylesheet" href="style.css">
+<script type="module">
+    import {change, day} from './daynight.js';
+            function listener(evt){
+                if(evt.target.value === 'night'){
+                    change('night');
+                    evt.target.value = 'day';
+                } else if(evt.target.value === 'day'){
+                    change('day');
+                    evt.target.value = 'night';
+                }
+            }
+            document.querySelector('#dayNightBtn').addEventListener('click', listener);
+            document.querySelector('#createBtn').addEventListener('click',);
+    </script>
+</head>
+
+<body>
+        <input type = "button" id = "dayNightBtn" value = "night">
+<h1><a href ="index.html">World Wide Web</a></h1>
+
+
+<nav>
+<ol>
+    <!-- <li><a href = "1.html">html</a></li>
+    <li><a href = "2.html">css</a></li>
+    <li><a href = "3.html">javascript</a></li> -->
+    </ol> 
+</nav>
+<div id = "crud">
+    <!-- //createElement
+    <input type = "button" id = "createBtn" value = "create">
+    //delete -->
+</div>
+<h2>Welcome</h2>
+Hello, WEB!!~
+
+<br>
+
+
+
+<script>
+    let topics = [{id:1, title:'html', body:'html is...'},
+                    {id:2, title:'css', body:'css is...'},
+                    {id : 3, title:'javascript', body: 'javascript is...'}    
+];
+function nav(){
+    let navTag = '';
+    for(let i = 0; i<topics.length; i= i+1){
+        navTag = navTag + `<li><a href = "/read/${topics[i].id}">${topics[i].title}</a></li>`;
+    }
+    document.querySelector('nav ol').innerHTML = navTag;
+    console.log(navTag);
+}
+    
+</script>
+</body>
