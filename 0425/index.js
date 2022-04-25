@@ -58,15 +58,27 @@ function welcome(){
 
 
 function read(){
-    //3. 아이디와 일치하는 토픽 원소를 찾는다
-    const topic = topics.filter(e=> e.id === selectedId)[0];
-    //4. 본문을 만든다
+    // //3. 아이디와 일치하는 토픽 원소를 찾는다
+    // const topic = topics.filter(e=> e.id === selectedId)[0];
+    // //4. 본문을 만든다
+    // const content = `<h2>${topic.title}</h2>
+    // ${topic.body}`;
+    // //5. 본문 출력
+    // document.querySelector('article').innerHTML=content;
+
+    // control();
+
+    fetch('http://localhost:3000/topics/'+selectedId)
+  .then(res => res.json())
+  .then(topic => { // 데이터 전달
     const content = `<h2>${topic.title}</h2>
     ${topic.body}`;
-    //5. 본문 출력
     document.querySelector('article').innerHTML=content;
-
     control();
+  });
+
+
+
 }
 
 function createHandler(e){
