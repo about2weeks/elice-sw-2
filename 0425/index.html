@@ -12,24 +12,10 @@
 </script>
 <title>Web - Welcome</title>
 <meta charset = "utf-8">
-<link rel = "stylesheet" href="style.css">
-<script type="module">
-    import {change, day} from './daynight.js';
-            function listener(evt){
-                if(evt.target.value === 'night'){
-                    change('night');
-                    evt.target.value = 'day';
-                } else if(evt.target.value === 'day'){
-                    change('day');
-                    evt.target.value = 'night';
-                }
-            }
-            document.querySelector('#dayNightBtn').addEventListener('click', listener);
-    </script>
 </head>
 
 <body>
-        <input type = "button" id = "dayNightBtn" value = "night">
+    
 <h1><a href ="index.html"
     onclick="event.preventDefault();
     welcome();
