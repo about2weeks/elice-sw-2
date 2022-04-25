@@ -1,8 +1,8 @@
-const topics = [
-    {id:1, title:'html', body:'html is...'},
-    {id:2, title:'css', body:'css is...'},
-    {id:3, title:'javascript', body: 'javascript is...'}    
-];
+// const topics = [
+//     {id:1, title:'html', body:'html is...'},
+//     {id:2, title:'css', body:'css is...'},
+//     {id:3, title:'javascript', body: 'javascript is...'}    
+// ];
 
 let nextId = 4;
 let selectedId = null;
@@ -16,8 +16,14 @@ function navHandler(e){
     read();
 }
 function nav(){
-    const navTag = topics.map(e=>`<li><a href="/read/${e.id}" id="${e.id}" onclick="navHandler(event);">${e.title}</a></li>`).join('');//배열을 문자열로 만들어주기 위해서 조인을 사용
+
+    fetch('http://localhost:3000/topics')
+    .then(res=>res.json())
+    .then(topics=>{
+      const navTag = topics.map(e=>`<li><a href="/read/${e.id}" id="${e.id}" onclick="navHandler(event);">${e.title}</a></li>`).join('');//배열을 문자열로 만들어주기 위해서 조인을 사용
     document.querySelector('nav>ol').innerHTML = navTag;
+    });
+
 }
 
 function createForm(){
