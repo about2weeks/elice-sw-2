@@ -1,15 +1,22 @@
-
-const mongoose = require('mongoose'); 
 const { Schema } = require('mongoose');
 const shortId = require('./types/short-id');
 
-module.exports = new Schema({
-    shortId,
-    title: String,
-    content: String,
-    author: String,
+const PostSchema = new Schema({
+  shortId,
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: String,
+    default: '작성자',
+  }
 }, {
-    timestamps: true,
-})
+  timestamps: true,
+});
 
-exports.Post = mongoose.model('Post', PostSchema);
+module.exports = PostSchema;

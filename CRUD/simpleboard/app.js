@@ -1,19 +1,28 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const dayjs = require("dayjs");
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const dayjs = require('dayjs');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-const { application } = require('express');
+const indexRouter = require('./routes');
+const postsRouter = require('./routes/posts');
 
-var app = express();
+mongoose.connect('mongodb://localhost:27017/simple-board');
+
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB Connected');
+});
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.locals.formatDate = (date) => {
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
+}
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -22,15 +31,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -39,9 +48,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-app.locals.formatDate = (date) => {
-  return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
-}
 
 module.exports = app;
