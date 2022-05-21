@@ -12,8 +12,10 @@ const PostSchema = new Schema({
     required: true,
   },
   author: {
-    type: String,
-    default: '작성자',
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required:true,
+    index: true,
   }
 }, {
   timestamps: true,
