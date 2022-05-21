@@ -5,9 +5,16 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const dayjs = require('dayjs');
+const session = require('express-session');
+const passport = require('passport'); 
 
 const indexRouter = require('./routes');
 const postsRouter = require('./routes/posts');
+const authRouter = require('./routes/auth');
+
+const loginRequired = require('./middlewares/login-required');
+
+require('./passport')();
 
 mongoose.connect('mongodb://localhost:27017/simple-board');
 
@@ -30,8 +37,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({ 
+  secret: 'elice', 
+  resave: false, 
+  saveUninitialized: true 
+}));
+// passport initialize
+// passport session 
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
-app.use('/posts', postsRouter);
+// /posts 경로에 로그인 필수로 설정하기
+app.use('/posts', loginRequired, postsRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
