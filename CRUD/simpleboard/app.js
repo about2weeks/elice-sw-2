@@ -7,12 +7,13 @@ const mongoose = require('mongoose');
 const dayjs = require('dayjs');
 const session = require('express-session');
 const passport = require('passport'); 
+const MongoStore = require('connect-mongo');
+
+const loginRequired = require('./middlewares/login-required');
 
 const indexRouter = require('./routes');
 const postsRouter = require('./routes/posts');
 const authRouter = require('./routes/auth');
-
-const loginRequired = require('./middlewares/login-required');
 
 require('./passport')();
 
@@ -40,16 +41,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ 
   secret: 'elice', 
   resave: false, 
-  saveUninitialized: true 
+  saveUninitialized: true,
+  store:MongoStore.create({
+   mongoUrl: 'mongodb://localhost:27017/simple-board',
+  }),
+  // 세션 스토어 사용하기
 }));
-// passport initialize
-// passport session 
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
-// /posts 경로에 로그인 필수로 설정하기
 app.use('/posts', loginRequired, postsRouter);
 app.use('/auth', authRouter);
 

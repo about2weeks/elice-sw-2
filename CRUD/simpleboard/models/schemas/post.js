@@ -1,5 +1,6 @@
 const { Schema } = require('mongoose');
 const shortId = require('./types/short-id');
+const CommentSchema = require('./comment');
 
 const PostSchema = new Schema({
   shortId,
@@ -14,9 +15,10 @@ const PostSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required:true,
+    required: true,
     index: true,
-  }
+  },
+  comments:[CommentSchema],
 }, {
   timestamps: true,
 });

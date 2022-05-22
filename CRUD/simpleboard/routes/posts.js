@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 const asyncHandler = require('../utils/async-handler');
 
 const router = Router();
@@ -10,33 +10,19 @@ router.get('/', asyncHandler(async (req, res) => {
     return;
   }
   
-  const page = Number(req.query.page || 1);// url 쿼리에서 page 받기, 기본값 1
-  const perPage = Number(req.query.perPage || 10);// url 쿼리에서 peRage 받기, 기본값 10
+  const page = Number(req.query.page || 1);
+  const perPage = Number(req.query.perPage || 10);
   
-//   const total = await Post.countDocuments({});// 전체 게시글 수 쿼리하기
-//   const posts = await Post.find({})
-//   .sort({createdAt: -1})
-//   .skip(perPage * (page-1))
-//   .limit(perPage);
-//   // sort, skip, limit 사용하기
-//   // total, posts 를 Promise.all 을 사용해 동시에 호출하기
-    
-  const [total, posts] = await Promise.all([
-        Post.countDocuments({}),
-        Post.find({})
-  .sort({createdAt: -1})
-  .skip(perPage * (page-1))
-  .limit(perPage),
-    ]);
-
-  const totalPage = Math.ceil(total / perPage);
+  // getPaginatedPosts 사용하기
+  const [posts, totalPage] = await Post.getPaginatedPosts({}, page, perPage);
   
-  res.render('post/list', { posts, page, perPage, totalPage });
+  
+  res.render('post/list', { posts, page, perPage, totalPage, path: req.baseUrl });
 }));
 
 router.get('/:shortId', asyncHandler(async (req, res) => {
   const { shortId } = req.params;
-  const post = await Post.findOne({ shortId });
+  const post = await Post.findOne({ shortId }).populate('author');
   
   if (req.query.edit) {
     res.render('post/edit', { post });
@@ -52,8 +38,14 @@ router.post('/', asyncHandler(async (req, res) => {
   if (!title || !content) {
     throw new Error('제목과 내용을 입력 해 주세요');
   }
-
-  const post = await Post.create({ title, content });
+  
+  const author = await User.findOne({shortId : req.user.shortId,});
+  
+  if(!author){
+    throw new Error('No Author');
+  }
+  // 로그인 된 사용자의 shortId 로 사용자를 찾아 게시글 생성시 작성자로 추가
+  const post = await Post.create({ title, content, author });
   res.redirect(`/posts/${post.shortId}`);
 }));
 
@@ -64,13 +56,28 @@ router.post('/:shortId', asyncHandler(async (req, res) => {
   if (!title || !content) {
     throw new Error('제목과 내용을 입력 해 주세요');
   }
-    
+  
+  const post = await Post.findOne({ shortId }).populate('author'); // 작성자 populate
+  // 작성자와 로그인된 사용자의 shortId 가 다를경우 오류 발생
+  
+  if(post.author.shortId !== req.user.shortId){
+    throw new Error('작성자가 아닙니다.');
+  }
+  
   await Post.updateOne({ shortId }, { title, content });
   res.redirect(`/posts/${shortId}`);
 }));
 
 router.delete('/:shortId', asyncHandler(async (req, res) => {
   const { shortId } = req.params;
+  
+  const post = await Post.findOne({ shortId }).populate('author'); // 작성자 populate
+  // 작성자와 로그인된 사용자의 shortId 가 다를경우 오류 발생
+  
+  if(post.author.shortId !== req.user.shortId){
+    throw new Error('작성자가 아닙니다.');
+  }; 
+  
   await Post.deleteOne({ shortId });
   res.send('OK');
 }));
